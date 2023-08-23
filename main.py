@@ -1,8 +1,5 @@
-import platform
-
-if platform.system() == 'Windows':
-    import dotenv
-    dotenv.load_dotenv('./production.env')
+import dotenv
+dotenv.load_dotenv('./production.env')
 from utils import *
 system_prompt = """请你想象你是一个专业的会议记录员，你的任务是在一场重要会议中，记录下关键讨论和决策，生成一份会议纪要。请确保你的记录既准确又全面，包括每个发言者的主要观点，讨论的主题，以及最后达成的共识。"""
 
