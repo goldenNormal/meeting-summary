@@ -5,14 +5,12 @@ from langchain.schema import (
     SystemMessage
 )
 import time
-import asyncio
 import os
 OPENAI_API_KEY,API_BASE = os.getenv('OPENAI_API_KEY'),os.getenv('API_BASE')
 from langchain.chat_models import ChatOpenAI
 from jinja2 import Template
 
 
-#默认是异步，全是异步
 gpt_35 = ChatOpenAI(streaming=True, callbacks=[StreamingStdOutCallbackHandler()],temperature = 0.0 , openai_api_key = OPENAI_API_KEY, openai_api_base = API_BASE, 
                                               model_name='gpt-3.5-turbo-16k-0613' )
 gpt4 = ChatOpenAI(streaming=True, callbacks=[StreamingStdOutCallbackHandler()],temperature = 0.0 , openai_api_key = OPENAI_API_KEY, openai_api_base = API_BASE, 
@@ -35,11 +33,6 @@ def new_gpt4(temperature=0.0,**kwargs):
 
 
 
-def get_prompt(name):
-    path = f'./prompt/{name}'
-    with open(path,'r',encoding='utf-8') as f:
-        prompt = f.read()
-    return prompt
 
 
 def get_token_cnt(text):
@@ -65,23 +58,10 @@ class BaseLLM:
     def add_human(self,msg):
         self.msgs.append(HumanMessage(content=msg))
 
-    def add_human_by_template(self,prompt_name,**kwargs):
-        self.msgs.append(HumanMessage(content=get_prompt(prompt_name).format(**kwargs)))
-
-    def add_human_by_template_jinja(self,prompt_name,**kwargs):
-        msg = jinja_format(get_prompt(prompt_name),**kwargs)
-        self.msgs.append(HumanMessage(content=msg))
-
     def add_system(self,msg):
         self.msgs.append(SystemMessage(content=msg))
     
-    def add_system_by_template(self,prompt_name,**kwargs):
-        self.msgs.append(SystemMessage(content=get_prompt(prompt_name).format(**kwargs)))
-
-    def add_system_by_template_jinja(self,prompt_name,**kwargs):
-        msg = jinja_format(get_prompt(prompt_name),**kwargs)
-        self.msgs.append(SystemMessage(content=msg))
-    
+ 
     def clear(self):
         self.msgs = []
     
