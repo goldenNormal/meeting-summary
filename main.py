@@ -8,7 +8,7 @@ from utils_llm_models import *
 llm = LLM(new_gpt35())
 
 
-meeting_content = read_txt('./metting_content.txt')
+meeting_content = read_txt('./meeting_content.txt')
 
 meeting_lines = meeting_content.split('\n')
 text = ''
